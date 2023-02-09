@@ -50,8 +50,9 @@ function App() {
     const queryclg = fields.get('query')
     console.log(queryclg)
     console.log({ query })
+    getMovies()
   }
-  const { movies } = useMovies()
+  const { movies, loading, getMovies } = useMovies({ query })
   return (
     <div className="page">
       <header>
@@ -69,9 +70,7 @@ function App() {
         </form>
         {error && <p style={{ color: 'red' }}>{error}</p>}
       </header>
-      <main>
-        <Movies movies={movies} />
-      </main>
+      <main>{loading ? <p>Loading...</p> : <Movies movies={movies} />}</main>
     </div>
   )
 }
