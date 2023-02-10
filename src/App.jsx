@@ -2,8 +2,8 @@ import './App.css'
 // eslint-disable-next-line no-unused-vars
 import { Movies } from './components/Movies.jsx'
 import { useMovies } from './hooks/useMovies'
-import { useRef, useState, useEffect } from 'react'
-
+import { useRef, useState, useEffect, useCallback } from 'react'
+import debounce from 'just-debounce-it'
 function useSearch() {
   const [query, setQuery] = useState('')
   const [error, setError] = useState('') // zod para validar forms
@@ -26,6 +26,14 @@ function useSearch() {
   return { query, setQuery, error }
 }
 function App() {
+  const debounceGetMovies = useCallback(
+    debounce((query) => {
+      console.log('query', query)
+      getMovies({ query })
+    }, 500),
+    []
+  )
+
   const [sort, setSort] = useState(false)
   const handleSort = () => {
     setSort(!sort)
@@ -39,9 +47,9 @@ function App() {
   const handleChange = (event) => {
     const value = event.target.value
     if (value.startsWith(' ')) return null
-    else {
-      setQuery(value)
-    }
+    setQuery(value)
+    // getMovies({ query: value })
+    debounceGetMovies(value)
   }
 
   const handleClick = () => {
