@@ -26,6 +26,10 @@ function useSearch() {
   return { query, setQuery, error }
 }
 function App() {
+  const [sort, setSort] = useState(false)
+  const handleSort = () => {
+    setSort(!sort)
+  }
   const counter = useRef(0) // valor que persiste entre renders
   counter.current++
   console.log(counter.current)
@@ -52,7 +56,7 @@ function App() {
     console.log({ query })
     getMovies()
   }
-  const { movies, loading, getMovies } = useMovies({ query })
+  const { movies, loading, getMovies } = useMovies({ query, sort })
   return (
     <div className="page">
       <header>
@@ -64,6 +68,7 @@ function App() {
             name="query"
             placeholder="Avengers, Star Wars, The Matrix"
           />
+          <input type="checkbox" onChange={handleSort} checked={sort} />
           <button onClick={handleClick} type="submit">
             Submit
           </button>
