@@ -32,7 +32,7 @@ function App() {
   }
   const counter = useRef(0) // valor que persiste entre renders
   counter.current++
-  console.log(counter.current)
+  // console.log('counter ' + counter.current)
 
   const { query, setQuery, error } = useSearch()
   const inputRef = useRef()
@@ -54,9 +54,12 @@ function App() {
     const queryclg = fields.get('query')
     console.log(queryclg)
     console.log({ query })
-    getMovies()
+    getMovies({ query })
   }
   const { movies, loading, getMovies } = useMovies({ query, sort })
+  useEffect(() => {
+    console.log('new Movie')
+  }, [getMovies])
   return (
     <div className="page">
       <header>
