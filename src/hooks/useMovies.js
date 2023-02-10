@@ -1,5 +1,5 @@
 // import withResponse from '../mocks/with-results.json'
-import { useState, useRef } from 'react'
+import { useState, useRef, useMemo } from 'react'
 import { searchMovies } from '../services/movies'
 
 // let previousSearch = ''
@@ -25,9 +25,14 @@ export function useMovies({ query, sort }) {
       setLoading(false)
     }
   }
-  const sortMovies = sort
-    ? [...movies].sort((a, b) => a.title.localeCompare(b.title))
-    : movies
+  // const sortMovies = sort
+  //   ? [...movies].sort((a, b) => a.title.localeCompare(b.title))
+  //   : movies
+  const sortMovies = useMemo(() => {
+    return sort
+      ? [...movies].sort((a, b) => a.title.localeCompare(b.title))
+      : movies
+  }, [movies, sort])
 
   return { movies: sortMovies, getMovies, loading, error }
 }
